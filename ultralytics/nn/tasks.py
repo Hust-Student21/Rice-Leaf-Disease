@@ -6,7 +6,11 @@ import re
 import types
 from copy import deepcopy
 from pathlib import Path
-
+from .modules.ema import EMA
+from .modules.da import DAttention
+from .modules.cot import CoTAttention
+from .modules.cga import *
+from .modules.dslam import DSLAM
 import torch
 import torch.nn as nn
 
@@ -1060,6 +1064,22 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
             args = [c1, c2, *args[1:]]
         elif m is CBFuse:
             c2 = ch[f[-1]]
+        elif m in {EMA}:
+            args = [ch[f], *args]
+        elif m in {DAttention}:
+            c2 = ch[f]
+            args = [c2, *args]
+        elif m is CoTAttention:
+            c1, c2 = ch[f], args[0]
+            if c2 != nc:
+                c2 = make_divisible(min(c2, max_channels) * width, 8)
+            args = [c1, *args[1:]]
+        elif m in {EfficientViT_M0, EfficientViT_M1, EfficientViT_M2, EfficientViT_M3, EfficientViT_M4, EfficientViT_M5}:
+            m = m(*args)
+            c2 = m.channel
+        elif m in {DSLAM}:
+            c2 = ch[f]
+            args = [c2, *args]
         else:
             c2 = ch[f]
 
