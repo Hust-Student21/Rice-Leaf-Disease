@@ -11,6 +11,7 @@ from .modules.da import DAttention
 from .modules.cot import CoTAttention
 from .modules.cga import *
 from .modules.dslam import DSLAM
+from .modules.LSKA import LSKA
 import torch
 import torch.nn as nn
 
@@ -1065,6 +1066,8 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
         elif m is CBFuse:
             c2 = ch[f[-1]]
         elif m in {EMA}:
+            args = [ch[f], *args]
+        elif m in {LSKA}:
             args = [ch[f], *args]
         elif m in {DAttention}:
             c2 = ch[f]

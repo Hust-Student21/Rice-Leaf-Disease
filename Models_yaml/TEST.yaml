@@ -1,0 +1,11 @@
+# Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
+path: C:\Users\ADMIN\Desktop\drive\three_disease\images # dataset root dir
+train: 
+val: C:\Users\ADMIN\Desktop\drive\three_disease\images\test
+test: 
+
+names:
+   0: folder
+   1: blast
+   2: brown
+   #3: yellow
